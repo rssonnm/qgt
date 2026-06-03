@@ -1,15 +1,3 @@
-#!/usr/bin/env python3
-"""
-Mối liên hệ giữa entanglement và hình học thông tin.
-
-Tại chuyển pha lượng tử, cả entropy vướng víu (entanglement entropy)
-lẫn fidelity susceptibility đều diverge. Bài này quét cả hai đại lượng
-dọc theo h/J và tính hệ số tương quan Pearson.
-
-Đây là minh chứng rằng entanglement KHÔNG ĐỘC LẬP với geometry
-— chúng cùng phản ánh cấu trúc QPT từ hai góc nhìn khác nhau.
-"""
-
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -32,7 +20,7 @@ def main():
     N = 6
     model = IsingModel(n_sites=N, periodic=True)
     qgt = QuantumGeometricTensor(model.ground_state, n_params=2)
-    subsystem = list(range(N // 2))  # nửa trái
+    subsystem = list(range(N // 2))
 
     print(f"── Entanglement ↔ Geometry (N={N}) ─────────────")
     print(f"   Subsystem A = sites {subsystem}")
@@ -58,7 +46,6 @@ def main():
     print(f"\n  Pearson correlation: r = {corr:.4f}")
     print(f"  → {'Tương quan mạnh' if abs(corr) > 0.7 else 'Tương quan trung bình'}")
 
-    # Vẽ
     fig, axes = plt.subplots(1, 3, figsize=(16, 5))
 
     axes[0].plot(h_vals, S_ent, color=COLORS['accent'], linewidth=2)
@@ -79,7 +66,6 @@ def main():
     axes[2].set_ylabel('χ_F')
     axes[2].set_title(f'Correlation: r = {corr:.3f}')
 
-    # Đường hồi quy
     z = np.polyfit(S_ent, chi_F, 1)
     x_fit = np.linspace(S_ent.min(), S_ent.max(), 50)
     axes[2].plot(x_fit, np.polyval(z, x_fit), 'k--', alpha=0.5)
